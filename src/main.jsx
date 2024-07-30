@@ -12,20 +12,28 @@ import Layout from "./Layout.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import PrivateRoute from "./components/PrivateRoute.jsx";
+import AuthProvider from "./context/AuthContext.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
-      <Route path="" element={<HomePage />} />
       <Route path="register" element={<RegisterPage />} />
       <Route path="login" element={<LoginPage />} />
-      <Route path="profile" element={<ProfilePage />} />
+
+      {/* Protected Routes */}
+      <Route element={<PrivateRoute />}>
+        <Route path="" element={<HomePage />} />
+        <Route path="profile" element={<ProfilePage />} />
+      </Route>
     </Route>
   )
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
