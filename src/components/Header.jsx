@@ -12,11 +12,11 @@ const Header = () => {
           <div className="left">
             {user ? (
               <li className="hover:text-white">
-                <Link to="/">VeryStickyNotes</Link>
+                <Link to="/">veryStickyNotes</Link>
               </li>
             ) : (
               <li className="hover:text-white cursor-pointer">
-                VeryStickyNotes
+                veryStickyNotes
               </li>
             )}
           </div>
