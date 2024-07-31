@@ -15,7 +15,7 @@ const AddButton = () => {
     const randomIndex = Math.floor(Math.random() * colors.length);
     const payload = {
       position: JSON.stringify({
-        x: startingPos.current,
+        x: startingPos.current + 90,
         y: startingPos.current,
       }),
       colors: JSON.stringify(colors[randomIndex]),
