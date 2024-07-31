@@ -1,8 +1,9 @@
 import { useAuth } from "../context/AuthContext";
+import { useNote } from "../context/NoteContext";
 
 const ProfilePage = () => {
   const { user } = useAuth();
-  // TODO: get total note count from the user's notes
+  const { notes } = useNote();
   return (
     <>
       <div className="relative">
@@ -27,7 +28,7 @@ const ProfilePage = () => {
           </div>
           <div className="item text-3xl">Name: {user?.name}</div>
           <div className="item text-3xl">Email: {user?.email}</div>
-          <div className="item text-3xl">Notes created: 10</div>
+          <div className="item text-3xl">Notes created: {notes?.length}</div>
         </section>
       </div>
     </>

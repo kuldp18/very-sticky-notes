@@ -1,6 +1,7 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import Spinner from "../icons/Spinner";
 import { db } from "../appwrite/databases";
+import { useAuth } from "./AuthContext";
 
 export const NoteContext = createContext();
 
@@ -10,17 +11,24 @@ const NoteProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
   const [selectedNote, setSelectedNote] = useState(null);
 
+  const { user } = useAuth();
+
   useEffect(() => {
+    const init = async () => {
+      const response = await db.notes.list(user.$id);
+      setNotes(response.documents);
+      setLoading(false);
+    };
+
     init();
-  }, []);
+  }, [user]);
 
-  const init = async () => {
-    const response = await db.notes.list();
-    setNotes(response.documents);
-    setLoading(false);
+  const contextData = {
+    notes,
+    setNotes,
+    selectedNote,
+    setSelectedNote,
   };
-
-  const contextData = { notes, setNotes, selectedNote, setSelectedNote };
 
   return (
     <NoteContext.Provider value={contextData}>
@@ -40,6 +48,11 @@ const NoteProvider = ({ children }) => {
       )}
     </NoteContext.Provider>
   );
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useNote = () => {
+  return useContext(NoteContext);
 };
 
 export default NoteProvider;

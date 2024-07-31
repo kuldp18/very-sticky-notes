@@ -1,5 +1,5 @@
 import { databases, collections } from "./config";
-import { ID } from "appwrite";
+import { ID, Query } from "appwrite";
 
 const db = {};
 
@@ -27,12 +27,10 @@ collections.forEach((collection) => {
     get: async (id) => {
       return await databases.getDocument(collection.dbId, collection.id, id);
     },
-    list: async (queries) => {
-      return await databases.listDocuments(
-        collection.dbId,
-        collection.id,
-        queries
-      );
+    list: async (userId) => {
+      return await databases.listDocuments(collection.dbId, collection.id, [
+        Query.equal("userId", userId),
+      ]);
     },
   };
 });

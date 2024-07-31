@@ -14,6 +14,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import AuthProvider from "./context/AuthContext.jsx";
+import NoteProvider from "./context/NoteContext.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,7 +34,9 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <NoteProvider>
+        <RouterProvider router={router} />
+      </NoteProvider>
     </AuthProvider>
   </React.StrictMode>
 );
