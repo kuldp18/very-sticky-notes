@@ -1,16 +1,39 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { validateEmail } from "../utils";
 
 const LoginPage = () => {
-  const { user } = useAuth();
+  const { user, loginUser } = useAuth();
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (user) {
       navigate("/");
     }
   }, [navigate, user]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      setError("Please fill in all the fields");
+      return;
+    }
+
+    if (email && !validateEmail(email)) {
+      setError("Please enter a valid email");
+      return;
+    }
+
+    const userInfo = { email, password };
+
+    loginUser(userInfo);
+  };
 
   return (
     <>
@@ -22,7 +45,7 @@ const LoginPage = () => {
         </div>
 
         <div className="mt-16 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -35,6 +58,8 @@ const LoginPage = () => {
                   id="email"
                   name="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
                   autoComplete="email"
@@ -57,6 +82,8 @@ const LoginPage = () => {
                   id="password"
                   name="password"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
                   autoComplete="current-password"
@@ -66,6 +93,7 @@ const LoginPage = () => {
             </div>
 
             <div>
+              {error && <p className="text-red-500 text-md my-2">{error}</p>}
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

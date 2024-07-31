@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const { user } = useAuth();
+  const { user, logoutUser } = useAuth();
+  const navigate = useNavigate();
   return (
     <header>
       <nav className="px-5 py-2 text-lg">
@@ -24,8 +26,14 @@ const Header = () => {
                 <li className="hover:text-white">
                   <Link to="/profile">Profile</Link>
                 </li>
-                <li className="hover:text-white">
-                  <Link to="/profile">Logout</Link>
+                <li
+                  className="hover:text-white cursor-pointer"
+                  onClick={async () => {
+                    await logoutUser();
+                    navigate("/login");
+                  }}
+                >
+                  Logout
                 </li>
               </>
             ) : (

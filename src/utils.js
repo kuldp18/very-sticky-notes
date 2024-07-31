@@ -31,3 +31,7 @@ export const bodyParser = (body) => {
     return body;
   }
 };
+
+export const validateEmail = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
