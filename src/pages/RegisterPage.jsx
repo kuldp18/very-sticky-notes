@@ -1,4 +1,56 @@
+import { useState, useEffect } from "react";
+import { validateEmail, validatePassword, validateName } from "../utils";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 const RegisterPage = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const { user, registerUser, authError } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [navigate, user]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!name || !email || !password) {
+      setError("Please fill in all the fields");
+      return;
+    }
+
+    // Validate email
+    if (email && !validateEmail(email)) {
+      setError("Please enter a valid email");
+      return;
+    }
+
+    // Validate password
+    if (password && !validatePassword(password)) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+
+    // Validate name
+    if (name && !validateName(name)) {
+      setError("Name must be at least 3 characters long");
+      return;
+    }
+
+    const userInfo = { name, email, password };
+
+    // Register user
+
+    registerUser(userInfo);
+  };
+
   return (
     <>
       <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-stone-950">
@@ -9,7 +61,7 @@ const RegisterPage = () => {
         </div>
 
         <div className="mt-16 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="name"
@@ -21,6 +73,8 @@ const RegisterPage = () => {
                 <input
                   id="name"
                   name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   type="text"
                   placeholder="Enter your name"
                   required
@@ -42,6 +96,8 @@ const RegisterPage = () => {
                   id="email"
                   name="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
                   autoComplete="email"
@@ -64,6 +120,8 @@ const RegisterPage = () => {
                   id="password"
                   name="password"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
                   autoComplete="current-password"
@@ -73,6 +131,10 @@ const RegisterPage = () => {
             </div>
 
             <div>
+              {error && <p className="text-red-500 text-md my-2">{error}</p>}
+              {authError && (
+                <p className="text-red-500 text-md my-2">{authError}</p>
+              )}
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
