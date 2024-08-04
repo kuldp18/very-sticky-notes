@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { validateEmail, validatePassword, validateName } from "../utils";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -58,9 +58,16 @@ const RegisterPage = () => {
           <h2 className="text-center text-4xl font-bold leading-9 tracking-tight text-white">
             Create a new account
           </h2>
+
+          <h3 className="py-3 text-center">
+            Already have an account? Sign in{" "}
+            <span className="text-purple-400 hover:text-purple-500">
+              <Link to="/login">here.</Link>
+            </span>
+          </h3>
         </div>
 
-        <div className="mt-16 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label

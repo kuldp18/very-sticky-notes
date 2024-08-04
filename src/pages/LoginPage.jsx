@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { validateEmail } from "../utils";
 
 const LoginPage = () => {
@@ -42,9 +42,16 @@ const LoginPage = () => {
           <h2 className="text-center text-4xl font-bold leading-9 tracking-tight text-white">
             Sign in to your account
           </h2>
+
+          <h3 className="py-3 text-center">
+            New here? Create your new account{" "}
+            <span className="text-purple-400 hover:text-purple-500">
+              <Link to="/register">here.</Link>
+            </span>
+          </h3>
         </div>
 
-        <div className="mt-16 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
