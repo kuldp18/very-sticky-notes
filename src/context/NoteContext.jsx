@@ -15,8 +15,10 @@ const NoteProvider = ({ children }) => {
 
   useEffect(() => {
     const init = async () => {
-      const response = await db.notes.list(user.$id);
-      setNotes(response.documents);
+      if (user) {
+        const response = await db.notes.list(user.$id);
+        setNotes(response.documents);
+      }
       setLoading(false);
     };
 
